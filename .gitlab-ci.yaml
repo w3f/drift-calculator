@@ -1,0 +1,16 @@
+stages:
+  - run
+
+run:
+  image: web3f/ansible:v0.0.1
+  stage: run
+  script:
+  - ansible-galaxy install --roles-path . w3f/log_drift
+  - ansible-playbook /etc/ansible/roles/log_drift/.yml
+  - .create_csv.sh
+  only:
+  - /^v[0-9]+(\.[0-9]+)*$/
+  artifacts:
+    paths:
+    - drift.csv
+    - total-drift.log
